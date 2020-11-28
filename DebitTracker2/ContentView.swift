@@ -45,8 +45,8 @@ struct ContentView: View {
                 .font(.title3)
                 .fontWeight(.ultraLight)
             
-            //if(self.debitors.count == 0){
-            if(false){
+            if(self.debitors.count == 0){
+            //if(false){ // debug only
                 
                 Text("Nobody has debts with you, enjoy!")
                     .font(.title3)
