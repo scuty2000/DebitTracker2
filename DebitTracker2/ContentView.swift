@@ -21,7 +21,7 @@ struct ContentView: View {
     @State var debitorSurname: String = ""
     @State var debitDescription: String = ""
     @State var debit: Int = 0
-    @State var debitors: [Debitor] = []
+    @State var debitors: [Debitor] = DebitTracker2App().readData()
     
     func updateData() {
         self.debitors = DebitTracker2App().readData()

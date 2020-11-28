@@ -51,6 +51,8 @@ struct DebitTracker2App: App {
             dictionary["\(name) \(surname)"] = debit
         }
         
+        // dictionary = [:] // use this to reset all data
+        
         do {
             let fileURL = try FileManager.default
                 .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
