@@ -1,2 +1,3 @@
-language: swift
+language:
+  - swift
 os: osx
