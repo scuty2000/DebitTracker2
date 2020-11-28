@@ -48,9 +48,18 @@ struct ContentView: View {
             if(self.debitors.count == 0){
             //if(false){ // debug only
                 
-                Text("Nobody has debts with you, enjoy!")
-                    .font(.title3)
-                    .frame(height: 150, alignment: .center)
+                
+                VStack{
+                    VStack(alignment: .center){
+                        Text("Nobody has debts with you, enjoy!")
+                            .font(.title3)
+                            .fontWeight(.ultraLight)
+                    }
+                    .padding()
+                }
+                .frame(width: 220, height: 150, alignment: .leading)
+                .background(RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.green).shadow(radius: 3).opacity(0.4))
                 
             } else {
             
@@ -67,6 +76,7 @@ struct ContentView: View {
                                         Spacer()
                                         Button("delete") {
                                             DebitTracker2App().removeData(name: debitor.name, surname: debitor.surname)
+                                            self.updateData()
                                         }
                                         .buttonStyle(DeleteButtonStyle())
                                     }
@@ -134,6 +144,9 @@ struct ContentView: View {
                             if(debitorName != "" && debitorSurname != "" && debit != 0){
                                 DebitTracker2App().writeNewData(name: debitorName, surname: debitorSurname, debit: debit)
                                 self.updateData()
+                                self.debitorName = ""
+                                self.debitorSurname = ""
+                                self.debit = 0
                             }
                         }
                         .buttonStyle(BlueButtonStyle())
@@ -144,6 +157,9 @@ struct ContentView: View {
             }
             
             Spacer()
+            Text("By Scuty")
+                .font(.body)
+                .fontWeight(.ultraLight)
         }
     }
 }
