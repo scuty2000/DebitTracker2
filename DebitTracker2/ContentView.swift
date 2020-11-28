@@ -45,7 +45,8 @@ struct ContentView: View {
                 .font(.title3)
                 .fontWeight(.ultraLight)
             
-            if(self.debitors.count == 0){
+            //if(self.debitors.count == 0){
+            if(false){
                 
                 Text("Nobody has debts with you, enjoy!")
                     .font(.title3)
@@ -59,9 +60,16 @@ struct ContentView: View {
                         ForEach(self.debitors) { debitor in
                             VStack{
                                 VStack(alignment: .leading){
-                                    Text(debitor.name)
-                                        .font(.title)
-                                        .fontWeight(.semibold)
+                                    HStack{
+                                        Text(debitor.name)
+                                            .font(.title)
+                                            .fontWeight(.semibold)
+                                        Spacer()
+                                        Button("delete") {
+                                            DebitTracker2App().removeData(name: debitor.name, surname: debitor.surname)
+                                        }
+                                        .buttonStyle(DeleteButtonStyle())
+                                    }
                                     Text(debitor.surname)
                                         .font(.title)
                                         .fontWeight(.heavy)
@@ -128,10 +136,7 @@ struct ContentView: View {
                                 self.updateData()
                             }
                         }
-                        .frame(width: 150.0, height: 30.0)
-                        .foregroundColor(.black)
-                        .font(.title3)
-                        .background(RoundedRectangle(cornerRadius: 5).fill(Color.accentColor).opacity(0.4))
+                        .buttonStyle(BlueButtonStyle())
                         Spacer().shadow(radius: 3)
                     }
                 }
@@ -146,5 +151,28 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct BlueButtonStyle: ButtonStyle {
+
+  func makeBody(configuration: Self.Configuration) -> some View {
+    configuration.label
+        .font(.headline)
+        .frame(maxWidth: .infinity, maxHeight: 45, alignment: .center)
+        .foregroundColor(configuration.isPressed ? Color.white.opacity(0.5) : Color.white)
+        .background(RoundedRectangle(cornerRadius: 15).fill(configuration.isPressed ? Color.blue.opacity(0.5) : Color.blue))
+        .scaleEffect(configuration.isPressed ? 0.99 : 1.0)
+  }
+}
+
+struct DeleteButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .font(.body)
+            .frame(width: 60, height: 25, alignment: .center)
+            .foregroundColor(configuration.isPressed ? Color.white.opacity(0.5) : Color.white)
+            .background(RoundedRectangle(cornerRadius: 15).fill(configuration.isPressed ? Color.red.opacity(0.5) : Color.red))
+            .scaleEffect(configuration.isPressed ? 0.99 : 1.0)
     }
 }

@@ -80,7 +80,8 @@ struct DebitTracker2App: App {
             dictionary = try JSONSerialization.jsonObject(with: data) as! [String : Int]
         } catch {
             print("no data here")
-            return []
+            // return [Debitor(name: "Luca", surname: "Scutigliani", debit: 10)] // use only for simulator (json don't work on simulators and I don't know why)
+            return[]
         }
         
         var data: [Debitor] = []
