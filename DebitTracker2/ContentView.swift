@@ -193,6 +193,7 @@ struct addView: View {
                             self.debitorName = ""
                             self.debitorSurname = ""
                             self.debit = ""
+                            root.addSheetPresented.toggle()
                         } else {
                             print("[UI] Debit field doesn't have a numerical content.")
                             self.debit = ""
