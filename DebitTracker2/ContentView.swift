@@ -48,13 +48,13 @@ struct ContentView: View {
                 
                     // Using a LazyVStack inside a ScrollView is pretty buggy, going to update this later.
                     ScrollView(showsIndicators: false){
-                        LazyVStack(alignment: .center, spacing: 10){
+                        LazyVStack(alignment: .center, spacing: 30){
                             ForEach(self.debitors) { debitor in
                                 DebitorRow(debitor: debitor, root: self)
+                                    .padding(.horizontal)
                             }
                         }
                     }
-                    .padding(.horizontal)
                 }
             }
             .navigationBarTitle("Debit Tracker")
@@ -140,7 +140,7 @@ struct DebitorRow: View {
         }
         .frame(height: 200, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.accentColor).shadow(radius: 3).opacity(0.4))
+                        .fill(Color.accentColor).shadow(color: Color.gray, radius: 7).opacity(0.4))
     }
 }
 
