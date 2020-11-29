@@ -11,6 +11,7 @@
 		C11F9A2B2571A7240008AA2F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11F9A2A2571A7240008AA2F /* ContentView.swift */; };
 		C11F9A2D2571A7270008AA2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C11F9A2C2571A7270008AA2F /* Assets.xcassets */; };
 		C11F9A302571A7270008AA2F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C11F9A2F2571A7270008AA2F /* Preview Assets.xcassets */; };
+		C137BA2F2573D786002CD0C5 /* Debitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C137BA2E2573D786002CD0C5 /* Debitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		C11F9A2C2571A7270008AA2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C11F9A2F2571A7270008AA2F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C11F9A312571A7270008AA2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C137BA2E2573D786002CD0C5 /* Debitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 		C11F9A272571A7240008AA2F /* DebitTracker2 */ = {
 			isa = PBXGroup;
 			children = (
+				C137BA2D2573D778002CD0C5 /* Models */,
 				C11F9A282571A7240008AA2F /* DebitTracker2App.swift */,
 				C11F9A2A2571A7240008AA2F /* ContentView.swift */,
 				C11F9A2C2571A7270008AA2F /* Assets.xcassets */,
@@ -67,6 +70,14 @@
 				C11F9A2F2571A7270008AA2F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C137BA2D2573D778002CD0C5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C137BA2E2573D786002CD0C5 /* Debitor.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C11F9A2B2571A7240008AA2F /* ContentView.swift in Sources */,
+				C137BA2F2573D786002CD0C5 /* Debitor.swift in Sources */,
 				C11F9A292571A7240008AA2F /* DebitTracker2App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

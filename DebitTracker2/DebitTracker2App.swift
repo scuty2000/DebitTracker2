@@ -15,104 +15,83 @@ struct DebitTracker2App: App {
         }
     }
     
-    func writeNewData(name: String, surname: String, debit: Int) {
+    func writeNewData(debitor: Debitor) {
         
-        var dictionary = ["":0]
-        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        let surname = surname.trimmingCharacters(in: .whitespacesAndNewlines)
+        var storedData: [Debitor] = []
         
         do {
             let fileURL = try FileManager.default
-                .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                .appendingPathComponent("data").appendingPathExtension("json")
+                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                .appendingPathComponent("newStorage").appendingPathExtension("json")
             let data = try Data(contentsOf: fileURL)
-            dictionary = try JSONSerialization.jsonObject(with: data) as! [String : Int]
+            storedData = try JSONDecoder.init().decode([Debitor].self, from: data)
         } catch {
-            print("File not found")
-            dictionary = ["\(name) \(surname)":debit]
+            print("File not found, creating one")
             do {
                 let fileURL = try FileManager.default
-                    .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                    .appendingPathComponent("data").appendingPathExtension("json")
-            
-                try JSONSerialization.data(withJSONObject: dictionary)
-                    .write(to: fileURL)
+                    .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                    .appendingPathComponent("newStorage").appendingPathExtension("json")
+                try JSONEncoder.init().encode(storedData).write(to: fileURL)
             } catch {
                 // should I add something here?
             }
-            return
         }
         
-        print("Got this:\n\(dictionary)\n")
-        
-        if(dictionary["\(name) \(surname)"] != nil){
-            dictionary["\(name) \(surname)"] = dictionary["\(name) \(surname)"]! + debit
-        } else {
-            dictionary["\(name) \(surname)"] = debit
-        }
-        
-        // dictionary = [:] // use this to reset all data
+        storedData.append(debitor)
         
         do {
             let fileURL = try FileManager.default
-                .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                .appendingPathComponent("data").appendingPathExtension("json")
-        
-            try JSONSerialization.data(withJSONObject: dictionary)
-                .write(to: fileURL)
+                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                .appendingPathComponent("newStorage").appendingPathExtension("json")
+            try JSONEncoder.init().encode(storedData).write(to: fileURL)
         } catch {
             // should I add something here?
         }
         
-        print(dictionary)
+        print(storedData)
         return
         
     }
     
     func readData() -> [Debitor] {
         
-        var dictionary = ["":0]
+        var readData: [Debitor] = []
+        
         do {
             let fileURL = try FileManager.default
-                .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                .appendingPathComponent("data").appendingPathExtension("json")
+                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                .appendingPathComponent("newStorage").appendingPathExtension("json")
             let data = try Data(contentsOf: fileURL)
-            dictionary = try JSONSerialization.jsonObject(with: data) as! [String : Int]
+            readData = try JSONDecoder.init().decode([Debitor].self, from: data)
         } catch {
-            print("no data here")
-            // return [Debitor(name: "Luca", surname: "Scutigliani", debit: 10)] // use only for simulator (json don't work on simulators and I don't know why)
+            print("[FileManager] File not found. Are you running in a simulator? Providing fake data.")
             return[]
         }
         
-        var data: [Debitor] = []
-        
-        for (key, value) in dictionary {
-            let spliced = key.components(separatedBy: " ")
-            data.append(Debitor(name: spliced[0], surname: spliced[1], debit: value))
-        }
-        
-        return data
+        return readData
     }
     
-    func removeData(name: String, surname: String) {
-        var dictionary = ["":0]
+    func removeData(debitor: Debitor) {
+        
+        var storedData: [Debitor] = []
+        
         do {
             let fileURL = try FileManager.default
-                .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                .appendingPathComponent("data").appendingPathExtension("json")
+                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                .appendingPathComponent("newStorage").appendingPathExtension("json")
             let data = try Data(contentsOf: fileURL)
-            dictionary = try JSONSerialization.jsonObject(with: data) as! [String : Int]
+            storedData = try JSONDecoder.init().decode([Debitor].self, from: data)
         } catch {
             print("no data here")
         }
-        dictionary.removeValue(forKey: "\(name) \(surname)")
+        
+        storedData = storedData.filter(){ $0.id != debitor.id }
+        
         do {
             let fileURL = try FileManager.default
-                .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                .appendingPathComponent("data").appendingPathExtension("json")
-        
-            try JSONSerialization.data(withJSONObject: dictionary)
-                .write(to: fileURL)
+                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                .appendingPathComponent("newStorage").appendingPathExtension("json")
+            try JSONEncoder.init().encode(storedData).write(to: fileURL)
         } catch {
             // should I add something here?
         }
