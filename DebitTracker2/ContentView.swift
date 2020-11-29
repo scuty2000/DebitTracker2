@@ -15,7 +15,6 @@ struct ContentView: View {
     
     func updateData() {
         self.debitors = DebitTracker2App().readData()
-        print(self.debitors)
     }
     
     var body: some View {
@@ -110,6 +109,18 @@ struct DeleteButtonStyle: ButtonStyle {
 struct DebitorRow: View {
     var debitor: Debitor
     var root: ContentView
+    
+    func calculateColor(colorString: String) -> Color {
+        var splittedString = colorString.split(separator: " ")
+        var color: Color = Color.blue.opacity(0.4)
+        if (splittedString.count == 5){
+            splittedString.remove(at: 0)
+            color = Color.init(red: Double(splittedString[0])!, green: Double(splittedString[1])!, blue: Double(splittedString[2])!).opacity(Double(splittedString[3])!)
+        } else {
+            color = Color.init(red: 1.0, green: 1.0, blue: 1.0)
+        }
+            return color
+    }
 
     var body: some View {
         VStack{
@@ -140,7 +151,7 @@ struct DebitorRow: View {
         }
         .frame(height: 200, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.accentColor).shadow(color: Color.gray, radius: 7).opacity(0.4))
+                        .fill(calculateColor(colorString: debitor.color)).shadow(color: Color.gray, radius: 5))
     }
 }
 
@@ -150,25 +161,27 @@ struct addView: View {
     @State var debitorSurname: String = ""
     @State var debitDescription: String = ""
     @State var debit: String = ""
+    @State var color: Color = Color.init(red: 1.0, green: 1.0, blue: 1.0)
     
     var root: ContentView
     
     var body: some View {
 
-        HStack{
-            Text("Modify")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-            Text("debit(or)")
-                .font(.largeTitle)
-                .fontWeight(.light)
-        }
-
-        Text("New or existing.")
-            .font(.title3)
-            .fontWeight(.ultraLight)
-
-        VStack(alignment: .leading){
+        VStack(alignment: .center){
+            Spacer()
+            
+            HStack{
+                Text("Modify")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                Text("debit(or)")
+                    .font(.largeTitle)
+                    .fontWeight(.light)
+            }
+            Text("New or existing.")
+                .font(.title3)
+                .fontWeight(.ultraLight)
+            
             HStack{
                 TextField("Name", text: $debitorName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -182,13 +195,16 @@ struct addView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disabled(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
             }
-            .padding(.bottom, 10)
+            .padding(.bottom, 20)
+            ColorPicker("Colore della card", selection: $color)
+                .padding(.bottom, 20)
             HStack{
                 Spacer()
                 Button("Add debit") {
+                    print("[ColorPicker] \(self.color.description)")
                     if(debitorName != "" && debitorSurname != ""){
                         if let numericDebit = Int(debit) {
-                            DebitTracker2App().writeNewData(debitor: Debitor.init(name: debitorName, surname: debitorSurname, debit: numericDebit))
+                            DebitTracker2App().writeNewData(debitor: Debitor.init(name: debitorName, surname: debitorSurname, debit: numericDebit, color: "\(self.color.description)"))
                             root.updateData()
                             self.debitorName = ""
                             self.debitorSurname = ""
@@ -203,8 +219,13 @@ struct addView: View {
                     }
                 }
                 .buttonStyle(BlueButtonStyle())
-                Spacer().shadow(radius: 3)
+                Spacer()
             }
+            Spacer()
+            Button("Close"){
+                root.addSheetPresented.toggle()
+            }
+            .accentColor(Color.gray)
         }
         .padding(.horizontal)
     }
